@@ -18,6 +18,8 @@ from typing import Dict, List, Optional, Tuple, Union, Any
 
 from docling_core.types.doc import DocItemLabel, DoclingDocument, DocumentOrigin
 
+from docling.datamodel.base_models import InputFormat
+from docling.backend.abstract_backend import DeclarativeDocumentBackend
 from .ofd_parser import (
     OFDParserError,
     OFDZipParser,
@@ -327,14 +329,18 @@ def _process_page_worker(
         return _PageResult(page_index, [], {}, 0, f"Worker error: {str(e)}\n{traceback.format_exc()}")
 
 
-class OFDDocumentBackendMultiprocess:
+
+class OFDDocumentBackendMultiprocess(DeclarativeDocumentBackend):
     """Backend for parsing OFD documents using Multiprocessing."""
 
     def __init__(
         self, 
+        in_doc,  # Required by AbstractDocumentBackend
         path_or_stream: Union[BytesIO, Path],
+        options = None,  # Required by AbstractDocumentBackend signature
         max_workers: Optional[int] = None
     ):
+        super().__init__(in_doc, path_or_stream, options)
         self.path_or_stream = path_or_stream
         self.max_workers = max_workers or os.cpu_count()
         self.valid = self._probe_validity()
@@ -356,6 +362,14 @@ class OFDDocumentBackendMultiprocess:
 
     def is_valid(self) -> bool:
         return self.valid
+
+    @classmethod
+    def supports_pagination(cls) -> bool:
+        return True
+
+    @classmethod
+    def supported_formats(cls) -> set[InputFormat]:
+        return {InputFormat.OFD}
 
     def convert(self) -> DoclingDocument:
         _log.info(f"Converting OFD using Multiprocessing (workers={self.max_workers})...")

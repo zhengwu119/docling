@@ -207,7 +207,7 @@ def _get_default_option(format: InputFormat) -> FormatOption:
             pipeline_cls=SimplePipeline, backend=WebVTTDocumentBackend
         ),
         InputFormat.OFD: FormatOption(
-            pipeline_cls=SimplePipeline, backend=OFDDocumentBackend
+            pipeline_cls=SimplePipeline, backend=OFDDocumentBackendMultiprocess
         ),
     }
     if (options := format_to_default_options.get(format)) is not None:
