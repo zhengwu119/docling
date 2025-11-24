@@ -59,9 +59,14 @@ class TableFormerMode(str, Enum):
     ACCURATE = "accurate"
 
 
-class TableStructureOptions(BaseModel):
+class BaseTableStructureOptions(BaseOptions):
+    """Base options for table structure models."""
+
+
+class TableStructureOptions(BaseTableStructureOptions):
     """Options for the table structure."""
 
+    kind: ClassVar[str] = "docling_tableformer"
     do_cell_matching: bool = (
         True
         # True:  Matches predictions back to PDF cells. Can break table output if PDF cells
@@ -308,17 +313,23 @@ class VlmPipelineOptions(PaginatedPipelineOptions):
     )
 
 
-class LayoutOptions(BaseModel):
-    """Options for layout processing."""
+class BaseLayoutOptions(BaseOptions):
+    """Base options for layout models."""
 
-    create_orphan_clusters: bool = True  # Whether to create clusters for orphaned cells
     keep_empty_clusters: bool = (
         False  # Whether to keep clusters that contain no text cells
     )
-    model_spec: LayoutModelConfig = DOCLING_LAYOUT_HERON
     skip_cell_assignment: bool = (
         False  # Skip cell-to-cluster assignment for VLM-only processing
     )
+
+
+class LayoutOptions(BaseLayoutOptions):
+    """Options for layout processing."""
+
+    kind: ClassVar[str] = "docling_layout_default"
+    create_orphan_clusters: bool = True  # Whether to create clusters for orphaned cells
+    model_spec: LayoutModelConfig = DOCLING_LAYOUT_HERON
 
 
 class AsrPipelineOptions(PipelineOptions):
@@ -361,15 +372,7 @@ class PdfPipelineOptions(PaginatedPipelineOptions):
 
     generate_parsed_pages: bool = False
 
-
-class ProcessingPipeline(str, Enum):
-    STANDARD = "standard"
-    VLM = "vlm"
-    ASR = "asr"
-
-
-class ThreadedPdfPipelineOptions(PdfPipelineOptions):
-    """Pipeline options for the threaded PDF pipeline with batching and backpressure control"""
+    ### Arguments for threaded PDF pipeline with batching and backpressure control
 
     # Batch sizes for different stages
     ocr_batch_size: int = 4
@@ -377,7 +380,18 @@ class ThreadedPdfPipelineOptions(PdfPipelineOptions):
     table_batch_size: int = 4
 
     # Timing control
-    batch_timeout_seconds: float = 2.0
+    batch_polling_interval_seconds: float = 0.5
 
     # Backpressure and queue control
     queue_max_size: int = 100
+
+
+class ProcessingPipeline(str, Enum):
+    LEGACY = "legacy"
+    STANDARD = "standard"
+    VLM = "vlm"
+    ASR = "asr"
+
+
+class ThreadedPdfPipelineOptions(PdfPipelineOptions):
+    """Pipeline options for the threaded PDF pipeline with batching and backpressure control"""
