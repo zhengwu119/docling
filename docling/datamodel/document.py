@@ -296,6 +296,8 @@ class _DocumentConversionInput(BaseModel):
                     mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 elif obj.suffixes[-1].lower() == ".pptx":
                     mime = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                elif obj.suffixes[-1].lower() == ".ofd":
+                    mime = "application/ofd"
 
         elif isinstance(obj, DocumentStream):
             content = obj.stream.read(8192)
@@ -316,6 +318,8 @@ class _DocumentConversionInput(BaseModel):
                     mime = "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
                 elif objname.endswith(".pptx"):
                     mime = "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+                elif objname.endswith(".ofd"):
+                    mime = "application/ofd"
 
         if mime is not None and mime.lower() == "application/gzip":
             if detected_mime := _DocumentConversionInput._detect_mets_gbs(obj):
@@ -396,6 +400,8 @@ class _DocumentConversionInput(BaseModel):
             mime = FormatToMimeType[InputFormat.XLSX][0]
         elif ext in FormatToExtensions[InputFormat.VTT]:
             mime = FormatToMimeType[InputFormat.VTT][0]
+        elif ext in FormatToExtensions[InputFormat.OFD]:
+            mime = FormatToMimeType[InputFormat.OFD][0]
 
         return mime
 
