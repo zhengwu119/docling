@@ -31,7 +31,7 @@ marko>=2.1.2,<3.0.0
 
 # 科学计算和数据处理
 scipy>=1.6.0,<2.0.0
-numpy>=1.21.0
+numpy>=1.21.0,<2.0  # 固定为 1.x 以避免与 PyTorch 等深度学习库的兼容性问题
 
 # 机器学习和模型加速
 huggingface_hub>=0.23,<1
@@ -64,6 +64,7 @@ polyfactory>=2.22.2
 # OCR支持 (可选 - 根据平台自动安装)
 # rapidocr>=3.3,<4.0.0  # 自动包含在docling中
 # ocrmac>=1.0.0,<2.0.0  # macOS专用，自动包含在docling中
+opencv-python-headless>=4.5.1.48,<4.10.0  # 用于 RapidOCR，固定版本以兼容 NumPy 1.x
 
 # 可选：增强OCR支持
 # easyocr>=1.7,<2.0  # 取消注释以启用EasyOCR支持
