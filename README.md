@@ -30,7 +30,12 @@ Docling simplifies document processing, parsing diverse formats — including ad
 
 ## Features
 
-* 🗂️ Parsing of [multiple document formats][supported_formats] incl. PDF, DOCX, PPTX, XLSX, OFD, HTML, WAV, MP3, VTT, images (PNG, TIFF, JPEG, ...), and more
+* 🗂️ Parsing of [multiple document formats][supported_formats] incl. PDF, DOCX, PPTX, XLSX, HTML, WAV, MP3, VTT, images (PNG, TIFF, JPEG, ...), and more
+* 📄 **OFD (Open Fixed-layout Document)** support with advanced features:
+  * ⚡ Multi-process parsing for high performance
+  * 🔤 Intelligent glyph decoding for custom fonts
+  * 🔍 OCR fallback for PUA (Private Use Area) characters
+  * 🧹 Automatic text cleanup and normalization
 * 📑 Advanced PDF understanding incl. page layout, reading order, table structure, code, formulas, image classification, and more
 * 🧬 Unified, expressive [DoclingDocument][docling_document] representation format
 * ↪️ Various [export formats][supported_formats] and options, including Markdown, HTML, [DocTags](https://arxiv.org/abs/2503.11576) and lossless JSON
@@ -43,6 +48,7 @@ Docling simplifies document processing, parsing diverse formats — including ad
 * 💻 Simple and convenient CLI
 
 ### What's new
+* 📄 **OFD (Open Fixed-layout Document)** format support with multi-process parsing
 * 📤 Structured [information extraction][extraction] \[🧪 beta\]
 * 📑 New layout model (**Heron**) by default, for faster PDF parsing
 * 🔌 [MCP server](https://docling-project.github.io/docling/usage/mcp/) for agentic applications
@@ -78,8 +84,73 @@ result = converter.convert(source)
 print(result.document.export_to_markdown())  # output: "## Docling Technical Report[...]"
 ```
 
+### OFD Document Support
+
+Docling provides native support for OFD (Open Fixed-layout Document) format, which is widely used in China:
+
+```python
+from docling.document_converter import DocumentConverter
+
+# Convert OFD document
+converter = DocumentConverter()
+result = converter.convert("document.ofd")
+
+# Export to various formats
+markdown_text = result.document.export_to_markdown()
+html_output = result.document.export_to_html()
+json_output = result.document.export_to_dict()
+```
+
+**Key features for OFD:**
+- ⚡ **Multi-process parsing**: Utilizes all CPU cores for fast conversion
+- 🔤 **Glyph decoding**: Automatically handles custom embedded fonts
+- 🔍 **OCR fallback**: Uses RapidOCR for PUA characters when needed
+- 🧹 **Text cleanup**: Removes garbled characters and normalizes output
+
 More [advanced usage options](https://docling-project.github.io/docling/usage/advanced_options/) are available in
 the docs.
+
+## Web Demo
+
+Docling provides two web demo applications for different environments:
+
+### 🖥️ CPU Environment (Lightweight)
+
+For CPU-only environments or when you want to avoid GPU dependencies:
+
+```bash
+python web_demo_lite.py
+```
+
+**Features:**
+- ✅ Supports: DOCX, PPTX, XLSX, HTML, Markdown, CSV, AsciiDoc, VTT, **OFD**
+- ❌ Excludes: PDF and image formats (to avoid GPU-heavy dependencies)
+- 🚀 Fast startup with minimal dependencies
+- 💻 Ideal for servers without GPU or development environments
+
+**Access:** http://localhost:8080
+
+### 🎮 GPU Environment (Full Features)
+
+For environments with GPU support and full document processing capabilities:
+
+```bash
+python web_demo.py
+```
+
+**Features:**
+- ✅ Supports: **All formats** including PDF, images, DOCX, PPTX, XLSX, HTML, Markdown, CSV, AsciiDoc, VTT, **OFD**
+- 🎨 Advanced PDF layout analysis with deep learning models
+- 🖼️ Image-based document processing
+- 📊 Table structure recognition
+- 🔬 Formula and code detection
+
+**Access:** http://localhost:8080
+
+**Note:** The GPU version requires additional dependencies. Install with:
+```bash
+pip install -r requirements-web.txt
+```
 
 ## CLI
 
@@ -94,6 +165,11 @@ You can also use 🥚[GraniteDocling](https://huggingface.co/ibm-granite/granite
 docling --pipeline vlm --vlm-model granite_docling https://arxiv.org/pdf/2206.01062
 ```
 This will use MLX acceleration on supported Apple Silicon hardware.
+
+For OFD documents:
+```bash
+docling document.ofd --to markdown
+```
 
 Read more [here](https://docling-project.github.io/docling/usage/)
 
