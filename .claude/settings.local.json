@@ -1,0 +1,19 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(chmod:*)",
+      "Bash(mkdir:*)",
+      "Bash(python:*)",
+      "Bash(python3:*)",
+      "Bash(pip3 install:*)",
+      "Bash(if [ -d \"venv\" ])",
+      "Bash(then source venv/bin/activate)",
+      "Bash(else echo \"No venv found\")",
+      "Bash(fi)",
+      "Bash(source:*)",
+      "Bash(pip install:*)",
+      "Bash(unzip:*)"
+    ],
+    "deny": []
+  }
+}

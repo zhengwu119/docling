@@ -18,25 +18,18 @@ from typing import Dict, List, Optional, Tuple, Union, Any
 
 from docling_core.types.doc import DocItemLabel, DoclingDocument, DocumentOrigin
 
+from .ofd_parser import (
+    OFDParserError,
+    OFDZipParser,
+    OFDPage,
+    OFDTextBlock,
+    OFDFontResource,
+)
+
 try:
-    from .ofd_parser import (
-        OFDParserError,
-        OFDZipParser,
-        OFDPage,
-        OFDTextBlock,
-        OFDFontResource,
-    )
-    # Import for type checking/runtime availability check
     from .ofd_glyph_decoder import OFDGlyphDecoder
 except ImportError:
-    from ofd_parser import (
-        OFDParserError,
-        OFDZipParser,
-        OFDPage,
-        OFDTextBlock,
-        OFDFontResource,
-    )
-    from ofd_glyph_decoder import OFDGlyphDecoder
+    OFDGlyphDecoder = None
 
 _log = logging.getLogger(__name__)
 

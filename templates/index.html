@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Docling 文档转换器 - Web Demo</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" rel="stylesheet">
+    <style>
+        .upload-area {
+            border: 2px dashed #dee2e6;
+            border-radius: 10px;
+            padding: 40px;
+            text-align: center;
+            background-color: #f8f9fa;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .upload-area:hover {
+            border-color: #0d6efd;
+            background-color: #e7f1ff;
+        }
+        
+        .upload-area.dragover {
+            border-color: #0d6efd;
+            background-color: #e7f1ff;
+            transform: scale(1.02);
+        }
+        
+        .progress-container {
+            margin-top: 20px;
+        }
+        
+        .result-card {
+            margin-top: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .format-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 15px;
+        }
+        
+        .preview-content {
+            max-height: 500px;
+            overflow-y: auto;
+            background-color: #f8f9fa;
+            border-radius: 5px;
+            padding: 15px;
+            margin-top: 10px;
+        }
+        
+        .task-card {
+            transition: all 0.3s ease;
+        }
+        
+        .task-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        .status-badge {
+            font-size: 0.8em;
+        }
+        
+        .loading-spinner {
+            display: inline-block;
+            width: 1rem;
+            height: 1rem;
+            vertical-align: text-bottom;
+            border: 2px solid currentColor;
+            border-right-color: transparent;
+            border-radius: 50%;
+            animation: spinner-border 0.75s linear infinite;
+        }
+        
+        @keyframes spinner-border {
+            to { transform: rotate(360deg); }
+        }
+        
+        .file-icon {
+            font-size: 3rem;
+            color: #6c757d;
+        }
+        
+        .supported-formats {
+            font-size: 0.9em;
+            color: #6c757d;
+            margin-top: 10px;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 0;
+            margin-bottom: 40px;
+        }
+        
+        .feature-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+        }
+    </style>
+</head>
+<body>
+    <!-- Hero Section -->
+    <div class="hero-section">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h1 class="display-4 fw-bold mb-3">
+                        <i class="bi bi-file-earmark-text"></i>
+                        Docling 文档转换器
+                    </h1>
+                    <p class="lead mb-4">
+                        智能文档转换平台，支持PDF、Word、PPT、OFD等多种格式，一键转换为Markdown、HTML、JSON等格式
+                    </p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <span class="badge bg-light text-dark fs-6">PDF</span>
+                        <span class="badge bg-light text-dark fs-6">DOCX</span>
+                        <span class="badge bg-light text-dark fs-6">PPTX</span>
+                        <span class="badge bg-light text-dark fs-6">XLSX</span>
+                        <span class="badge bg-light text-dark fs-6">HTML</span>
+                        <span class="badge bg-success text-white fs-6">OFD</span>
+                        <span class="badge bg-light text-dark fs-6">图片</span>
+                        <span class="badge bg-light text-dark fs-6">更多...</span>
+                    </div>
+                </div>
+                <div class="col-lg-4 text-center">
+                    <i class="bi bi-arrow-repeat" style="font-size: 8rem; opacity: 0.8;"></i>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- 功能特性 -->
+        <div class="row mb-5">
+            <div class="col-md-4 mb-3">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-cloud-upload text-primary" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">简单上传</h5>
+                        <p class="card-text">拖拽或点击上传文档，支持多种格式，最大100MB</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-gear-fill text-success" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">智能转换</h5>
+                        <p class="card-text">基于AI的文档解析，保留原有格式和结构</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 mb-3">
+                <div class="card feature-card h-100">
+                    <div class="card-body text-center">
+                        <i class="bi bi-eye text-info" style="font-size: 3rem;"></i>
+                        <h5 class="card-title mt-3">在线预览</h5>
+                        <p class="card-text">转换完成后可直接在线预览和下载结果</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 文件上传区域 -->
+        <div class="row">
+            <div class="col-lg-8">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-upload"></i>
+                            上传文档
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="upload-area" id="uploadArea">
+                            <div class="file-icon">
+                                <i class="bi bi-cloud-upload"></i>
+                            </div>
+                            <h5 class="mt-3">拖拽文件到这里或点击选择</h5>
+                            <p class="text-muted">支持 PDF, DOCX, PPTX, XLSX, HTML, MD, OFD, 图片 等格式</p>
+                            <button class="btn btn-primary" id="selectFileBtn">
+                                <i class="bi bi-folder2-open"></i>
+                                选择文件
+                            </button>
+                            <input type="file" id="fileInput" style="display: none;" accept=".pdf,.docx,.pptx,.xlsx,.html,.htm,.md,.csv,.png,.jpg,.jpeg,.tiff,.bmp,.webp,.asciidoc,.adoc,.asc,.vtt,.ofd">
+                        </div>
+                        
+                        <!-- 输出格式选择 -->
+                        <div class="mt-4">
+                            <h6><i class="bi bi-gear"></i> 选择输出格式:</h6>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="markdown" id="format-markdown" checked>
+                                        <label class="form-check-label" for="format-markdown">
+                                            <i class="bi bi-markdown"></i> Markdown
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="html" id="format-html" checked>
+                                        <label class="form-check-label" for="format-html">
+                                            <i class="bi bi-code-slash"></i> HTML
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="json" id="format-json">
+                                        <label class="form-check-label" for="format-json">
+                                            <i class="bi bi-braces"></i> JSON
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="text" id="format-text">
+                                        <label class="form-check-label" for="format-text">
+                                            <i class="bi bi-file-text"></i> 纯文本
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="yaml" id="format-yaml">
+                                        <label class="form-check-label" for="format-yaml">
+                                            <i class="bi bi-file-code"></i> YAML
+                                        </label>
+                                    </div>
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" value="doctags" id="format-doctags">
+                                        <label class="form-check-label" for="format-doctags">
+                                            <i class="bi bi-tags"></i> DocTags
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 进度条 -->
+                        <div class="progress-container" id="progressContainer" style="display: none;">
+                            <div class="d-flex justify-content-between align-items-center mb-2">
+                                <span class="text-muted" id="progressText">准备上传...</span>
+                                <span class="text-muted" id="progressPercent">0%</span>
+                            </div>
+                            <div class="progress">
+                                <div class="progress-bar" id="progressBar" role="progressbar" style="width: 0%"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 转换结果 -->
+                <div class="result-card card" id="resultCard" style="display: none;">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0">
+                            <i class="bi bi-check-circle-fill text-success"></i>
+                            转换完成
+                        </h5>
+                        <span class="badge bg-success status-badge" id="conversionTime"></span>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h6><i class="bi bi-info-circle"></i> 文档信息</h6>
+                                <ul class="list-unstyled" id="documentInfo">
+                                </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <h6><i class="bi bi-download"></i> 下载结果</h6>
+                                <div class="format-buttons" id="downloadButtons">
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- 预览区域 -->
+                        <div class="mt-4">
+                            <h6><i class="bi bi-eye"></i> 预览</h6>
+                            <div class="btn-group" role="group" id="previewButtons">
+                            </div>
+                            <div class="preview-content" id="previewContent" style="display: none;">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 任务历史 -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="mb-0">
+                            <i class="bi bi-clock-history"></i>
+                            转换历史
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div id="taskHistory">
+                            <div class="text-center text-muted">
+                                <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+                                <p class="mt-2">暂无转换记录</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 支持格式说明 -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="mb-0">
+                            <i class="bi bi-list-check"></i>
+                            支持格式
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <h6 class="text-primary">输入格式</h6>
+                        <div class="supported-formats">
+                            <span class="badge bg-light text-dark me-1 mb-1">PDF</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">DOCX</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">PPTX</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">XLSX</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">HTML</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">MD</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">CSV</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">PNG</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">JPG</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">TIFF</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">WebP</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">AsciiDoc</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">WebVTT</span>
+                            <span class="badge bg-success text-white me-1 mb-1">OFD</span>
+                        </div>
+                        
+                        <h6 class="text-success mt-3">输出格式</h6>
+                        <div class="supported-formats">
+                            <span class="badge bg-light text-dark me-1 mb-1">Markdown</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">HTML</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">JSON</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">YAML</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">纯文本</span>
+                            <span class="badge bg-light text-dark me-1 mb-1">DocTags</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-light mt-5 py-4">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>Docling 文档转换器</h6>
+                    <p class="text-muted small">
+                        基于 <a href="https://github.com/docling-project/docling" target="_blank">Docling</a> 
+                        构建的智能文档转换平台
+                    </p>
+                </div>
+                <div class="col-md-6 text-md-end">
+                    <p class="text-muted small">
+                        <i class="bi bi-shield-check"></i>
+                        本地处理，数据安全
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // 全局变量
+        let currentTaskId = null;
+        let pollInterval = null;
+        let isProcessing = false; // 添加处理状态标志
+
+        // DOM 元素
+        const uploadArea = document.getElementById('uploadArea');
+        const fileInput = document.getElementById('fileInput');
+        const selectFileBtn = document.getElementById('selectFileBtn');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressBar = document.getElementById('progressBar');
+        const progressText = document.getElementById('progressText');
+        const progressPercent = document.getElementById('progressPercent');
+        const resultCard = document.getElementById('resultCard');
+        const taskHistory = document.getElementById('taskHistory');
+
+        // 事件监听器
+        
+        // 主上传按钮 - 最简版本
+        selectFileBtn.addEventListener('click', () => {
+            console.log('Select button clicked');
+            fileInput.click();
+        });
+        
+        // 文件输入事件
+        fileInput.addEventListener('change', handleFileSelect);
+        
+        // 拖拽上传
+        uploadArea.addEventListener('dragover', handleDragOver);
+        uploadArea.addEventListener('dragleave', handleDragLeave);
+        uploadArea.addEventListener('drop', handleDrop);
+        
+        // 上传区域点击（避免按钮区域）
+        uploadArea.addEventListener('click', (e) => {
+            // 如果点击的不是按钮区域，则触发文件选择
+            if (!e.target.closest('#selectFileBtn')) {
+                fileInput.click();
+            }
+        });
+
+        // 拖拽事件处理
+        function handleDragOver(e) {
+            e.preventDefault();
+            if (!isProcessing) {
+                uploadArea.classList.add('dragover');
+            }
+        }
+
+        function handleDragLeave(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+        }
+
+        function handleDrop(e) {
+            e.preventDefault();
+            uploadArea.classList.remove('dragover');
+            
+            if (isProcessing) {
+                showAlert('正在处理文件，请稍候...', 'info');
+                return;
+            }
+            
+            const files = e.dataTransfer.files;
+            if (files.length > 0) {
+                handleFile(files[0]);
+            }
+        }
+
+        // 文件选择处理
+        function handleFileSelect(e) {
+            if (isProcessing) {
+                showAlert('正在处理文件，请稍候...', 'info');
+                return;
+            }
+            
+            const file = e.target.files[0];
+            if (file) {
+                handleFile(file);
+            }
+            // 清空文件输入框，允许选择同一个文件
+            e.target.value = '';
+        }
+
+        // 文件处理
+        function handleFile(file) {
+            if (isProcessing) {
+                showAlert('正在处理文件，请稍候...', 'info');
+                return;
+            }
+            
+            // 检查文件大小 (100MB)
+            if (file.size > 100 * 1024 * 1024) {
+                showAlert('文件太大，最大支持100MB', 'danger');
+                return;
+            }
+
+            // 获取选中的输出格式
+            const formats = getSelectedFormats();
+            if (formats.length === 0) {
+                showAlert('请至少选择一种输出格式', 'warning');
+                return;
+            }
+
+            // 隐藏之前的结果
+            hideResult();
+            
+            uploadFile(file, formats);
+        }
+
+        // 获取选中的输出格式
+        function getSelectedFormats() {
+            const checkboxes = document.querySelectorAll('input[type="checkbox"]:checked');
+            return Array.from(checkboxes).map(cb => cb.value);
+        }
+
+        // 上传文件
+        async function uploadFile(file, formats) {
+            if (isProcessing) {
+                return;
+            }
+            
+            // 设置处理状态
+            isProcessing = true;
+            
+            const formData = new FormData();
+            formData.append('file', file);
+            formats.forEach(format => formData.append('formats', format));
+
+            // 显示进度条
+            showProgress('上传文件中...', 10);
+            
+            try {
+                const response = await fetch('/api/upload', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+                
+                if (response.ok) {
+                    currentTaskId = result.task_id;
+                    showProgress('文件上传成功，开始转换...', 20);
+                    startPolling();
+                } else {
+                    showAlert(result.error || '上传失败', 'danger');
+                    resetProcessing();
+                }
+            } catch (error) {
+                showAlert('网络错误: ' + error.message, 'danger');
+                resetProcessing();
+            }
+        }
+
+        // 重置处理状态
+        function resetProcessing() {
+            isProcessing = false;
+            hideProgress();
+            stopPolling();
+        }
+
+        // 开始轮询任务状态
+        function startPolling() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+            }
+
+            pollInterval = setInterval(async () => {
+                if (currentTaskId) {
+                    await checkTaskStatus(currentTaskId);
+                }
+            }, 1000);
+        }
+
+        // 检查任务状态
+        async function checkTaskStatus(taskId) {
+            try {
+                const response = await fetch(`/api/status/${taskId}`);
+                const task = await response.json();
+
+                if (response.ok) {
+                    updateProgress(task);
+                    
+                    if (task.status === 'completed') {
+                        showResult(task);
+                        isProcessing = false; // 重置处理状态
+                        stopPolling();
+                        loadTaskHistory();
+                    } else if (task.status === 'failed' || task.status === 'error') {
+                        showAlert(task.error || '转换失败', 'danger');
+                        resetProcessing();
+                        loadTaskHistory();
+                    }
+                } else {
+                    console.error('状态检查失败:', task.error);
+                }
+            } catch (error) {
+                console.error('网络错误:', error);
+            }
+        }
+
+        // 停止轮询
+        function stopPolling() {
+            if (pollInterval) {
+                clearInterval(pollInterval);
+                pollInterval = null;
+            }
+        }
+
+        // 更新进度
+        function updateProgress(task) {
+            let text = '';
+            switch (task.status) {
+                case 'uploaded':
+                    text = '文件已上传，准备转换...';
+                    break;
+                case 'processing':
+                    text = '正在转换文档...';
+                    break;
+                default:
+                    text = '处理中...';
+            }
+            
+            showProgress(text, task.progress);
+        }
+
+        // 显示进度
+        function showProgress(text, percent) {
+            progressContainer.style.display = 'block';
+            progressText.textContent = text;
+            progressPercent.textContent = `${percent}%`;
+            progressBar.style.width = `${percent}%`;
+            
+            if (percent >= 100) {
+                progressBar.classList.add('bg-success');
+            } else {
+                progressBar.classList.remove('bg-success');
+            }
+        }
+
+        // 隐藏进度
+        function hideProgress() {
+            progressContainer.style.display = 'none';
+            progressBar.classList.remove('bg-success');
+            progressBar.style.width = '0%';
+        }
+
+        // 隐藏结果
+        function hideResult() {
+            resultCard.style.display = 'none';
+        }
+
+        // 显示结果
+        function showResult(task) {
+            hideProgress();
+            
+            // 显示转换时间
+            document.getElementById('conversionTime').textContent = 
+                `转换耗时: ${task.conversion_time.toFixed(2)}秒`;
+            
+            // 显示文档信息
+            const docInfo = document.getElementById('documentInfo');
+            docInfo.innerHTML = `
+                <li><strong>文件名:</strong> ${task.filename}</li>
+                <li><strong>页数:</strong> ${task.document_info.page_count || 'N/A'}</li>
+                <li><strong>字数:</strong> ${task.document_info.word_count || 'N/A'}</li>
+            `;
+            
+            // 创建下载按钮
+            const downloadButtons = document.getElementById('downloadButtons');
+            downloadButtons.innerHTML = '';
+            
+            Object.keys(task.output_files).forEach(format => {
+                const btn = document.createElement('button');
+                btn.className = 'btn btn-outline-primary btn-sm';
+                btn.innerHTML = `<i class="bi bi-download"></i> ${format.toUpperCase()}`;
+                btn.onclick = () => downloadFile(task.task_id, format);
+                downloadButtons.appendChild(btn);
+            });
+            
+            // 创建预览按钮
+            const previewButtons = document.getElementById('previewButtons');
+            previewButtons.innerHTML = '';
+            
+            Object.keys(task.output_files).forEach((format, index) => {
+                const btn = document.createElement('button');
+                btn.className = `btn ${index === 0 ? 'btn-primary' : 'btn-outline-secondary'} btn-sm`;
+                btn.textContent = format.toUpperCase();
+                btn.onclick = () => previewFile(task.task_id, format);
+                previewButtons.appendChild(btn);
+            });
+            
+            // 默认预览第一个格式
+            const firstFormat = Object.keys(task.output_files)[0];
+            if (firstFormat) {
+                previewFile(task.task_id, firstFormat);
+            }
+            
+            resultCard.style.display = 'block';
+        }
+
+        // 下载文件
+        function downloadFile(taskId, format) {
+            window.open(`/api/download/${taskId}/${format}`, '_blank');
+        }
+
+        // 预览文件
+        async function previewFile(taskId, format) {
+            const previewContent = document.getElementById('previewContent');
+            
+            try {
+                // 更新按钮状态
+                document.querySelectorAll('#previewButtons button').forEach(btn => {
+                    btn.className = btn.textContent.toLowerCase() === format ? 
+                        'btn btn-primary btn-sm' : 'btn btn-outline-secondary btn-sm';
+                });
+                
+                previewContent.innerHTML = '<div class="text-center"><div class="loading-spinner"></div> 加载中...</div>';
+                previewContent.style.display = 'block';
+                
+                const response = await fetch(`/api/preview/${taskId}/${format}`);
+                
+                if (response.ok) {
+                    if (format === 'html') {
+                        // HTML 格式在新窗口打开
+                        window.open(`/api/preview/${taskId}/${format}`, '_blank');
+                        previewContent.innerHTML = '<div class="text-center text-muted"><i class="bi bi-box-arrow-up-right"></i> HTML已在新窗口中打开</div>';
+                    } else {
+                        // 其他格式显示文本内容
+                        const content = await response.text();
+                        previewContent.innerHTML = `<pre><code>${escapeHtml(content)}</code></pre>`;
+                    }
+                } else {
+                    previewContent.innerHTML = '<div class="text-danger">预览失败</div>';
+                }
+            } catch (error) {
+                previewContent.innerHTML = '<div class="text-danger">预览出错: ' + error.message + '</div>';
+            }
+        }
+
+        // 转义HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // 加载任务历史
+        async function loadTaskHistory() {
+            try {
+                const response = await fetch('/api/tasks');
+                const data = await response.json();
+                
+                if (response.ok && data.tasks.length > 0) {
+                    const historyHtml = data.tasks.slice(0, 10).map(task => {
+                        const statusClass = getStatusClass(task.status);
+                        const statusIcon = getStatusIcon(task.status);
+                        const timeAgo = getTimeAgo(task.created_at);
+                        
+                        return `
+                            <div class="task-card card mb-2" style="cursor: pointer;" onclick="loadTask('${task.task_id}')">
+                                <div class="card-body p-3">
+                                    <div class="d-flex justify-content-between align-items-start">
+                                        <div>
+                                            <h6 class="card-title mb-1">${task.filename}</h6>
+                                            <small class="text-muted">${timeAgo}</small>
+                                        </div>
+                                        <span class="badge ${statusClass} status-badge">
+                                            <i class="bi ${statusIcon}"></i> ${getStatusText(task.status)}
+                                        </span>
+                                    </div>
+                                    ${task.status === 'processing' ? 
+                                        `<div class="progress mt-2" style="height: 4px;">
+                                            <div class="progress-bar" style="width: ${task.progress}%"></div>
+                                        </div>` : ''}
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    taskHistory.innerHTML = historyHtml;
+                } else {
+                    taskHistory.innerHTML = `
+                        <div class="text-center text-muted">
+                            <i class="bi bi-inbox" style="font-size: 2rem;"></i>
+                            <p class="mt-2">暂无转换记录</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                console.error('加载历史记录失败:', error);
+            }
+        }
+
+        // 加载任务
+        async function loadTask(taskId) {
+            try {
+                const response = await fetch(`/api/status/${taskId}`);
+                const task = await response.json();
+                
+                if (response.ok && task.status === 'completed') {
+                    currentTaskId = taskId;
+                    showResult(task);
+                }
+            } catch (error) {
+                console.error('加载任务失败:', error);
+            }
+        }
+
+        // 获取状态样式类
+        function getStatusClass(status) {
+            const classes = {
+                'completed': 'bg-success',
+                'processing': 'bg-primary',
+                'failed': 'bg-danger',
+                'error': 'bg-danger',
+                'uploaded': 'bg-info'
+            };
+            return classes[status] || 'bg-secondary';
+        }
+
+        // 获取状态图标
+        function getStatusIcon(status) {
+            const icons = {
+                'completed': 'bi-check-circle-fill',
+                'processing': 'bi-arrow-clockwise',
+                'failed': 'bi-x-circle-fill',
+                'error': 'bi-exclamation-triangle-fill',
+                'uploaded': 'bi-cloud-upload-fill'
+            };
+            return icons[status] || 'bi-question-circle';
+        }
+
+        // 获取状态文本
+        function getStatusText(status) {
+            const texts = {
+                'completed': '完成',
+                'processing': '处理中',
+                'failed': '失败',
+                'error': '错误',
+                'uploaded': '已上传'
+            };
+            return texts[status] || status;
+        }
+
+        // 获取相对时间
+        function getTimeAgo(timestamp) {
+            const now = Date.now() / 1000;
+            const diff = now - timestamp;
+            
+            if (diff < 60) return '刚刚';
+            if (diff < 3600) return `${Math.floor(diff / 60)}分钟前`;
+            if (diff < 86400) return `${Math.floor(diff / 3600)}小时前`;
+            return `${Math.floor(diff / 86400)}天前`;
+        }
+
+        // 显示警告消息
+        function showAlert(message, type = 'info') {
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type} alert-dismissible fade show`;
+            alertDiv.innerHTML = `
+                ${message}
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            `;
+            
+            // 插入到页面顶部
+            document.querySelector('.container').insertBefore(alertDiv, document.querySelector('.container').firstChild);
+            
+            // 5秒后自动隐藏
+            setTimeout(() => {
+                if (alertDiv.parentNode) {
+                    alertDiv.remove();
+                }
+            }, 5000);
+        }
+
+        // 页面加载完成后执行
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded successfully');
+            loadTaskHistory();
+        });
+    </script>
+</body>
+</html>

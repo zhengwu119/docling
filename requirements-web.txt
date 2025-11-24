@@ -1,0 +1,20 @@
+# Web端依赖 - Flask Web应用程序所需的库
+flask>=2.3.0
+flask-cors>=4.0.0
+werkzeug>=2.3.0
+
+# 文档转换核心库
+docling>=2.55.1
+PyYAML>=6.0
+
+# OFD格式支持
+# 注意: 当前使用自定义OFD解析器，基于标准XML解析
+# 如需更强大的OFD支持，可考虑安装以下库:
+# ofdium>=0.1.0        # OFD文档处理库
+# python-ofd>=1.0.0    # Python OFD解析器
+
+# 图片处理支持 (OFD解析器需要)
+Pillow>=10.0.0
+
+# 注意：docling会自动安装其所有必需的依赖项
+# 包括: docling-core, docling-parse, pypdfium2, pydantic 等

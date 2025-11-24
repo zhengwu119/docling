@@ -4,7 +4,13 @@ import sys
 from abc import abstractmethod
 from typing import List
 
-from transformers import StoppingCriteria
+try:
+    from transformers import StoppingCriteria
+except Exception:  # pragma: no cover
+    class _MissingDependency:
+        def __init__(self, *args, **kwargs):
+            raise ImportError("Transformers library is required for generation utilities but is not installed.")
+    StoppingCriteria = _MissingDependency
 
 _log = logging.getLogger(__name__)
 

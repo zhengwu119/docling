@@ -62,11 +62,28 @@ from docling.datamodel.settings import (
     settings,
 )
 from docling.exceptions import ConversionError
-from docling.pipeline.asr_pipeline import AsrPipeline
 from docling.pipeline.base_pipeline import BasePipeline
 from docling.pipeline.simple_pipeline import SimplePipeline
-from docling.pipeline.standard_pdf_pipeline import StandardPdfPipeline
 from docling.utils.utils import chunkify
+
+# Lazy imports to avoid loading GPU-heavy dependencies
+# StandardPdfPipeline and AsrPipeline will only be imported when actually used
+_StandardPdfPipeline = None
+_AsrPipeline = None
+
+def _get_standard_pdf_pipeline_class():
+    global _StandardPdfPipeline
+    if _StandardPdfPipeline is None:
+        from docling.pipeline.standard_pdf_pipeline import StandardPdfPipeline
+        _StandardPdfPipeline = StandardPdfPipeline
+    return _StandardPdfPipeline
+
+def _get_asr_pipeline_class():
+    global _AsrPipeline
+    if _AsrPipeline is None:
+        from docling.pipeline.asr_pipeline import AsrPipeline
+        _AsrPipeline = AsrPipeline
+    return _AsrPipeline
 
 _log = logging.getLogger(__name__)
 _PIPELINE_CACHE_LOCK = threading.Lock()
@@ -79,8 +96,18 @@ class FormatOption(BaseFormatOption):
     @model_validator(mode="after")
     def set_optional_field_default(self) -> Self:
         if self.pipeline_options is None:
-            self.pipeline_options = self.pipeline_cls.get_default_options()
+            # Resolve pipeline class, handling property descriptors on subclass
+            pipeline_cls = self.pipeline_cls
+            if isinstance(pipeline_cls, property):
+                pipeline_cls = pipeline_cls.fget(self)  # type: ignore[arg-type]
 
+            if pipeline_cls is None:
+                attr = getattr(type(self), "pipeline_cls", None)
+                if isinstance(attr, property):
+                    pipeline_cls = attr.fget(self)  # type: ignore[arg-type]
+                else:
+                    pipeline_cls = self.pipeline_cls
+            self.pipeline_options = pipeline_cls.get_default_options()
         return self
 
 
@@ -132,18 +159,27 @@ class XMLJatsFormatOption(FormatOption):
 
 
 class ImageFormatOption(FormatOption):
-    pipeline_cls: Type = StandardPdfPipeline
+    @property  
+    def pipeline_cls(self) -> Type:
+        return _get_standard_pdf_pipeline_class()
+    
     backend: Type[AbstractDocumentBackend] = ImageDocumentBackend
 
 
 class PdfFormatOption(FormatOption):
-    pipeline_cls: Type = StandardPdfPipeline
+    @property
+    def pipeline_cls(self) -> Type:
+        return _get_standard_pdf_pipeline_class()
+        
     backend: Type[AbstractDocumentBackend] = DoclingParseV4DocumentBackend
     backend_options: Optional[PdfBackendOptions] = None
 
 
 class AudioFormatOption(FormatOption):
-    pipeline_cls: Type = AsrPipeline
+    @property
+    def pipeline_cls(self) -> Type:
+        return _get_asr_pipeline_class()
+        
     backend: Type[AbstractDocumentBackend] = NoOpBackend
 
 
@@ -159,7 +195,7 @@ def _get_default_option(format: InputFormat) -> FormatOption:
         InputFormat.XML_USPTO: PatentUsptoFormatOption(),
         InputFormat.XML_JATS: XMLJatsFormatOption(),
         InputFormat.METS_GBS: FormatOption(
-            pipeline_cls=StandardPdfPipeline, backend=MetsGbsDocumentBackend
+            pipeline_cls=_get_standard_pdf_pipeline_class(), backend=MetsGbsDocumentBackend
         ),
         InputFormat.IMAGE: ImageFormatOption(),
         InputFormat.PDF: PdfFormatOption(),

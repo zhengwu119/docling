@@ -1,0 +1,20 @@
+# Web Demo 最小依赖
+# 用于无GPU环境的轻量级部署
+
+# Web框架
+flask>=2.3.0
+flask-cors>=4.0.0
+werkzeug>=2.3.0
+
+# 数据处理
+pyyaml>=6.0
+
+# NumPy版本锁定（避免2.x兼容性问题）
+numpy<2.0,>=1.24.0
+
+# Docling核心依赖（不包含GPU相关）
+# 注意：完整的docling依赖请参考requirements.txt
+# 这里只列出Web Demo必需的最小依赖
+
+# OFD support
+fonttools>=4.0.0

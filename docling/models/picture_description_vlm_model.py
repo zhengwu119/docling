@@ -5,7 +5,15 @@ from pathlib import Path
 from typing import Optional, Type, Union
 
 from PIL import Image
-from transformers import AutoModelForImageTextToText
+try:
+    from transformers import AutoModelForImageTextToText
+except Exception:  # pragma: no cover
+    # Placeholder that raises if used without transformers installed.
+    class _MissingDependency:
+        def __init__(self, *args, **kwargs):
+            raise ImportError("Transformers library is required for PictureDescriptionVlmModel but is not installed.")
+    AutoModelForImageTextToText = _MissingDependency
+
 
 from docling.datamodel.accelerator_options import AcceleratorOptions
 from docling.datamodel.pipeline_options import (

@@ -1,0 +1,6 @@
+# 最小化依赖 - 仅运行Demo所需的核心库
+docling>=2.55.1
+PyYAML>=6.0
+
+# 注意：docling会自动安装其所有必需的依赖项
+# 包括: docling-core, docling-parse, pypdfium2, pydantic 等

@@ -14,7 +14,15 @@ from docling_core.types.doc import (
 from docling_core.types.doc.labels import CodeLanguageLabel
 from PIL import Image
 from pydantic import BaseModel
-from transformers import AutoModelForImageTextToText, AutoProcessor
+try:
+    from transformers import AutoModelForImageTextToText, AutoProcessor
+except Exception:  # pragma: no cover
+    class _MissingDependency:
+        def __init__(self, *args, **kwargs):
+            raise ImportError("Transformers library is required for CodeFormulaModel but is not installed.")
+    AutoModelForImageTextToText = _MissingDependency
+    AutoProcessor = _MissingDependency
+
 
 from docling.datamodel.accelerator_options import AcceleratorDevice, AcceleratorOptions
 from docling.datamodel.base_models import ItemAndImageEnrichmentElement

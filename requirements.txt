@@ -1,0 +1,76 @@
+# 核心依赖 - Docling库及其核心组件
+docling>=2.55.1
+docling-core[chunking]>=2.48.2,<3.0.0
+docling-parse>=4.4.0,<5.0.0
+docling-ibm-models>=3.9.1,<4
+
+# YAML支持 - 用于YAML格式输出
+PyYAML>=6.0
+
+# 基础Python库 (通常已包含在docling依赖中，但明确列出以确保兼容性)
+pydantic>=2.0.0,<3.0.0
+requests>=2.32.2,<3.0.0
+pillow>=10.0.0,<12.0.0
+pandas>=2.1.4,<3.0.0
+tqdm>=4.65.0,<5.0.0
+
+# PDF处理后端
+pypdfium2>=4.30.0,!=4.30.1,<5.0.0
+
+# Office文档处理
+python-docx>=1.1.2,<2.0.0
+python-pptx>=1.0.2,<2.0.0
+openpyxl>=3.1.5,<4.0.0
+
+# HTML/XML处理
+beautifulsoup4>=4.12.3,<5.0.0
+lxml>=4.0.0,<6.0.0
+
+# Markdown处理
+marko>=2.1.2,<3.0.0
+
+# 科学计算和数据处理
+scipy>=1.6.0,<2.0.0
+numpy>=1.21.0
+
+# 机器学习和模型加速
+huggingface_hub>=0.23,<1
+accelerate>=1.0.0,<2
+
+# 文件类型检测
+filetype>=1.2.0,<2.0.0
+
+# 配置管理
+pydantic-settings>=2.3.0,<3.0.0
+
+# 空间索引 (用于布局分析)
+rtree>=1.3.0,<2.0.0
+
+# CLI支持
+typer>=0.12.5,<0.20.0
+
+# LaTeX编码支持
+pylatexenc>=2.10,<3.0
+
+# 插件系统
+pluggy>=1.0.0,<2.0.0
+
+# SSL证书
+certifi>=2024.7.4
+
+# 测试和开发工具 (可选)
+polyfactory>=2.22.2
+
+# OCR支持 (可选 - 根据平台自动安装)
+# rapidocr>=3.3,<4.0.0  # 自动包含在docling中
+# ocrmac>=1.0.0,<2.0.0  # macOS专用，自动包含在docling中
+
+# 可选：增强OCR支持
+# easyocr>=1.7,<2.0  # 取消注释以启用EasyOCR支持
+# tesserocr>=2.7.1,<3.0.0  # 取消注释以启用Tesseract支持
+
+# 可选：视觉语言模型支持
+# transformers>=4.46.0,<5.0.0  # 取消注释以启用VLM支持
+# mlx-vlm>=0.3.0,<1.0.0  # macOS M1/M2专用
+# vllm>=0.10.0,<1.0.0  # Linux x86_64专用
+# qwen-vl-utils>=0.0.11

@@ -9,7 +9,12 @@ from typing import Dict, List, Optional
 import zipfile
 import xml.etree.ElementTree as ET
 
-from fontTools.ttLib import TTFont
+try:
+    from fontTools.ttLib import TTFont
+    FONTTOOLS_AVAILABLE = True
+except ImportError:
+    TTFont = None
+    FONTTOOLS_AVAILABLE = False
 
 _log = logging.getLogger(__name__)
 

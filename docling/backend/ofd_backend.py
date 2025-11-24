@@ -54,6 +54,11 @@ except ImportError:  # pragma: no cover - optional dependency
     _log.info("RapidOCR not available, OCR fallback disabled")
 
 
+from docling.backend.abstract_backend import DeclarativeDocumentBackend
+from docling.datamodel.backend_options import BackendOptions, DeclarativeBackendOptions
+from docling.datamodel.base_models import InputFormat
+from docling.datamodel.document import InputDocument
+
 @dataclass
 class _TextItem:
     text: str
@@ -64,12 +69,17 @@ class _TextItem:
     font_size: float
 
 
-class OFDDocumentBackend:
+class OFDDocumentBackend(DeclarativeDocumentBackend):
     """Backend for parsing OFD (Open Fixed-layout Document) format files."""
 
-    def __init__(self, path_or_stream: Union[BytesIO, Path]):
+    def __init__(
+        self,
+        in_doc: "InputDocument",
+        path_or_stream: Union[BytesIO, Path],
+        options: BackendOptions = DeclarativeBackendOptions(),
+    ):
+        super().__init__(in_doc, path_or_stream, options)
         _log.debug("Starting OFDDocumentBackend...")
-        self.path_or_stream = path_or_stream
         self.valid = self._probe_validity()
         self._ocr_engine = None
         self._active_zip: Optional[zipfile.ZipFile] = None
@@ -96,6 +106,14 @@ class OFDDocumentBackend:
     def is_valid(self) -> bool:
         """Check if the OFD file is valid."""
         return self.valid
+
+    @classmethod
+    def supports_pagination(cls) -> bool:
+        return True
+
+    @classmethod
+    def supported_formats(cls) -> set[InputFormat]:
+        return {InputFormat.OFD}
 
     def unload(self):
         """Clean up resources."""
@@ -162,8 +180,12 @@ class OFDDocumentBackend:
     def _ocr_decode_text(self, block: OFDTextBlock) -> Optional[str]:
         if not self._has_pua_characters(block.raw_text or ""):
             return None
-        engine = self._ensure_ocr_engine()
-        if engine is None:
+        if not OCR_AVAILABLE:
+            return None
+        
+        try:
+            engine = RapidOCR()
+        except Exception:
             return None
         font_bytes = self._load_font_bytes(block.font_id or "") if block.font_id else None
         if not font_bytes:
@@ -202,16 +224,18 @@ class OFDDocumentBackend:
                     continue
 
                 margin = max(pixel_size // 2, 32)
-                img = Image.new("L", (width + margin, height + margin), color=255)
+                img = Image.new("RGB", (width + margin, height + margin), color=(255, 255, 255))
                 draw = ImageDraw.Draw(img)
                 offset_x = margin // 2 - bbox[0]
                 offset_y = margin // 2 - bbox[1]
-                draw.text((offset_x, offset_y), segment_text, fill=0, font=font)
+                draw.text((offset_x, offset_y), segment_text, fill=(0, 0, 0), font=font)
 
+                img_arr = np.ascontiguousarray(np.array(img))
+                _log.debug(f"OCR Input: type={type(img_arr)}, shape={img_arr.shape}, dtype={img_arr.dtype}")
                 try:
-                    result, _ = engine(np.array(img))
+                    result, _ = engine(img_arr)
                 except Exception as exc:  # pragma: no cover - OCR runtime errors
-                    _log.debug("RapidOCR segment failed: %s", exc)
+                    _log.debug(f"RapidOCR segment failed: {repr(exc)}")
                     continue
 
                 if not result:

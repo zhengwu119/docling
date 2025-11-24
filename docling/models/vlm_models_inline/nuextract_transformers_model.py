@@ -7,7 +7,15 @@ from typing import Any, Optional, Union
 
 import numpy as np
 from PIL.Image import Image
-from transformers import AutoModelForImageTextToText, AutoProcessor, GenerationConfig
+try:
+    from transformers import AutoModelForImageTextToText, AutoProcessor, GenerationConfig
+except Exception:  # pragma: no cover
+    class _MissingDependency:
+        def __init__(self, *args, **kwargs):
+            raise ImportError("Transformers library is required for NuExtract model but is not installed.")
+    AutoModelForImageTextToText = _MissingDependency
+    AutoProcessor = _MissingDependency
+    GenerationConfig = _MissingDependency
 
 from docling.datamodel.accelerator_options import (
     AcceleratorOptions,
