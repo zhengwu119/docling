@@ -1,3 +1,173 @@
+## [v2.63.0](https://github.com/docling-project/docling/releases/tag/v2.63.0) - 2025-11-20
+
+### Feature
+
+* Add save and load for conversion result ([#2648](https://github.com/docling-project/docling/issues/2648)) ([`b559813`](https://github.com/docling-project/docling/commit/b559813b9becf7950bc539c1334e55ef17bed2ad))
+
+### Fix
+
+* Respect document_timeout in new threaded StandardPdfPipeline ([#2653](https://github.com/docling-project/docling/issues/2653)) ([`2087c6b`](https://github.com/docling-project/docling/commit/2087c6bf9f65f279dd2ff0631768996aecd640fe))
+* In DocumentConverter.convert_string() make nullable name parameter optional ([#2660](https://github.com/docling-project/docling/issues/2660)) ([`6fb9a5f`](https://github.com/docling-project/docling/commit/6fb9a5f98aa33f0e37d720487e71467cd9aae846))
+* Enable GPU for RapidOCR when available ([#2659](https://github.com/docling-project/docling/issues/2659)) ([`463a3fd`](https://github.com/docling-project/docling/commit/463a3fd4743708ccebe32fa1ddb462a6899277b9))
+* Remove py3.14 requirement for default rapidocr ([#2639](https://github.com/docling-project/docling/issues/2639)) ([`da4c2e9`](https://github.com/docling-project/docling/commit/da4c2e9dbe5ea363d29af188e24885f1ef3efba9))
+
+### Documentation
+
+* Add Hector as compatible AI agent platform integration ([#2662](https://github.com/docling-project/docling/issues/2662)) ([`ce5a099`](https://github.com/docling-project/docling/commit/ce5a099dfde50b5416f7a9676914c938740e0ada))
+* Added documentation to use SuryaOCR via plugin docling-surya ([#2533](https://github.com/docling-project/docling/issues/2533)) ([`b216ad8`](https://github.com/docling-project/docling/commit/b216ad848dfe6d8cdfdbb90d10000773d8563633))
+* Fix broken homepage links ([#2651](https://github.com/docling-project/docling/issues/2651)) ([`03e7c7d`](https://github.com/docling-project/docling/commit/03e7c7d924f4973c679ef988bc861741e02d804a))
+* **examples:** Processing parquet file of images ([#2641](https://github.com/docling-project/docling/issues/2641)) ([`8af228f`](https://github.com/docling-project/docling/commit/8af228f1e2e5f12815f19beb979e7b1253c15115))
+* Move Installation and Quickstart (Usage) under Getting started ([#2644](https://github.com/docling-project/docling/issues/2644)) ([`d549445`](https://github.com/docling-project/docling/commit/d549445e78fc8839c510a52e6c72e2e711ba153e))
+* Add redirection from getting started page ([#2640](https://github.com/docling-project/docling/issues/2640)) ([`ac9fc58`](https://github.com/docling-project/docling/commit/ac9fc585bbb515c3e00b042eeb979800ae548660))
+* **examples:** Remove deprecation warnings with export_to_dataframe ([#2638](https://github.com/docling-project/docling/issues/2638)) ([`f552862`](https://github.com/docling-project/docling/commit/f5528623a77d9a3b0d821035f66baefd49da8dd9))
+
+## [v2.62.0](https://github.com/docling-project/docling/releases/tag/v2.62.0) - 2025-11-17
+
+### Feature
+
+* Add the Image backend ([#2627](https://github.com/docling-project/docling/issues/2627)) ([`3495b73`](https://github.com/docling-project/docling/commit/3495b73de875c2438108b4362dbac770b6d322ca))
+* **experimental:** Layout + VLM model with layout prompt ([#2244](https://github.com/docling-project/docling/issues/2244)) ([`4852d8b`](https://github.com/docling-project/docling/commit/4852d8b4f2938434f1d6250984fa18ec5428055f))
+
+### Fix
+
+* Correct the model-repo name ([#2624](https://github.com/docling-project/docling/issues/2624)) ([`14b436d`](https://github.com/docling-project/docling/commit/14b436d59075c6e78fb0aac9d2fc9742954920ea))
+* **docx:** Parse page headers and footers ([#2599](https://github.com/docling-project/docling/issues/2599)) ([`054c4a6`](https://github.com/docling-project/docling/commit/054c4a634d91c5480df473b289b9403498065334))
+
+### Documentation
+
+* Combine Home and Getting Started pages ([#2600](https://github.com/docling-project/docling/issues/2600)) ([`ae30373`](https://github.com/docling-project/docling/commit/ae30373ee7fd5e91e24511eb06d6b24a7bc79e07))
+
+## [v2.61.2](https://github.com/docling-project/docling/releases/tag/v2.61.2) - 2025-11-10
+
+### Fix
+
+* Default to EasyOCR in Python 3.14 ([#2605](https://github.com/docling-project/docling/issues/2605)) ([`5c27567`](https://github.com/docling-project/docling/commit/5c27567c4160b6ec43857855c8d5cd3a58c031c5))
+
+## [v2.61.1](https://github.com/docling-project/docling/releases/tag/v2.61.1) - 2025-11-06
+
+### Fix
+
+* **docx:** Slow table parsing ([#2553](https://github.com/docling-project/docling/issues/2553)) ([`ef623ff`](https://github.com/docling-project/docling/commit/ef623ffceefe40aa237e163b564310ed81296bcf))
+* **html:** Slow table parsing ([#2582](https://github.com/docling-project/docling/issues/2582)) ([`0ba8d5d`](https://github.com/docling-project/docling/commit/0ba8d5d9e325390626268744f289458e91689b4b))
+
+### Documentation
+
+* Make navigation menus collapse and expand ([#2573](https://github.com/docling-project/docling/issues/2573)) ([`8da3d28`](https://github.com/docling-project/docling/commit/8da3d287edd6a65877c147882430422e4373230b))
+
+## [v2.61.0](https://github.com/docling-project/docling/releases/tag/v2.61.0) - 2025-11-06
+
+### Feature
+
+* **vlm:** Track generated tokens and stop reasons for VLM models ([#2543](https://github.com/docling-project/docling/issues/2543)) ([`6a04e27`](https://github.com/docling-project/docling/commit/6a04e273528691eb22a5708f1270d4c5fa8f5b7c))
+
+### Fix
+
+* Temporarily pin NuExtract to working revision ([#2588](https://github.com/docling-project/docling/issues/2588)) ([`fa92574`](https://github.com/docling-project/docling/commit/fa925741b6dc00c7bd2806c62cb75cb539649c9f))
+* **ocr:** Use PSM integer values directly instead of constructor ([#2578](https://github.com/docling-project/docling/issues/2578)) ([`1a5146a`](https://github.com/docling-project/docling/commit/1a5146abc9dbd4ed9d08da186695fbbcb07814a2))
+
+## [v2.60.1](https://github.com/docling-project/docling/releases/tag/v2.60.1) - 2025-11-04
+
+### Fix
+
+* Extract response from api_image_request in picture description ([#2571](https://github.com/docling-project/docling/issues/2571)) ([`8360aa5`](https://github.com/docling-project/docling/commit/8360aa54492bc5b5e07fcd07b0b85284910f1a14))
+
+## [v2.60.0](https://github.com/docling-project/docling/releases/tag/v2.60.0) - 2025-10-31
+
+### Feature
+
+* Use threading in the standard pipeline and move old behavior to legacy ([#2452](https://github.com/docling-project/docling/issues/2452)) ([`268d027`](https://github.com/docling-project/docling/commit/268d027c8f2abae7339b4c7d33642c3135c56e7a))
+
+### Fix
+
+* **pdf:** Threadsafe for pypdfium2 backend ([#2527](https://github.com/docling-project/docling/issues/2527)) ([`a51275d`](https://github.com/docling-project/docling/commit/a51275d08037a30ebaa07e33b0c4e82623791259))
+
+### Documentation
+
+* Update link to Open WebUI docs ([#2549](https://github.com/docling-project/docling/issues/2549)) ([`01577e9`](https://github.com/docling-project/docling/commit/01577e92d15653a517c81226695821a7ea4c955e))
+* Update installation options with extras and review FAQ ([#2548](https://github.com/docling-project/docling/issues/2548)) ([`cb10043`](https://github.com/docling-project/docling/commit/cb100437facdfc064c83396c3aebb185717bead6))
+* Fix typos ([#2546](https://github.com/docling-project/docling/issues/2546)) ([`741c44f`](https://github.com/docling-project/docling/commit/741c44fa45250c7d0e5687547fc5d2453dc20e6b))
+
+## [v2.59.0](https://github.com/docling-project/docling/releases/tag/v2.59.0) - 2025-10-30
+
+### Feature
+
+* **vlm:** Add num_tokens as attribtue for VlmPrediction ([#2489](https://github.com/docling-project/docling/issues/2489)) ([`b6c892b`](https://github.com/docling-project/docling/commit/b6c892b505bf29a12ce7e8d9b4e88e1253440ebc))
+* Support for Python 3.14 ([#2530](https://github.com/docling-project/docling/issues/2530)) ([`cdffb47`](https://github.com/docling-project/docling/commit/cdffb47b9a12da23489e345ea633786914776f7d))
+
+### Fix
+
+* Xlsx cell parsing, now returning values instead of formulas ([#2520](https://github.com/docling-project/docling/issues/2520)) ([`d9c90eb`](https://github.com/docling-project/docling/commit/d9c90eb45e899b2f3b608d959cb664c016e63821))
+
+### Documentation
+
+* Add details and examples on optimal GPU setup ([#2531](https://github.com/docling-project/docling/issues/2531)) ([`97aa06b`](https://github.com/docling-project/docling/commit/97aa06bfbca6f9a0bfca81c4ed99bf83f36c9f9b))
+* Update opensearch notebook and backend documentation ([#2519](https://github.com/docling-project/docling/issues/2519)) ([`9a6fdf9`](https://github.com/docling-project/docling/commit/9a6fdf936bd59421c9b133c065059c3a0783ca2b))
+
+## [v2.58.0](https://github.com/docling-project/docling/releases/tag/v2.58.0) - 2025-10-22
+
+### Feature
+
+* **pdf:** Support for password-protected PDF documents ([#2499](https://github.com/docling-project/docling/issues/2499)) ([`bbe82a6`](https://github.com/docling-project/docling/commit/bbe82a68d08e5dc33191524bb636f06112edff87))
+* **backend:** Add generic options support and HTML image handling modes ([#2011](https://github.com/docling-project/docling/issues/2011)) ([`a30e6a7`](https://github.com/docling-project/docling/commit/a30e6a76148079cc48fb179e4b9ca36371026b6f))
+* **ASR:** MLX Whisper Support for Apple Silicon ([#2366](https://github.com/docling-project/docling/issues/2366)) ([`657ce8b`](https://github.com/docling-project/docling/commit/657ce8b01cecd4983075142a64c076abb35e80ae))
+
+### Fix
+
+* **markdown:** Set the correct discriminator in md backend options ([#2501](https://github.com/docling-project/docling/issues/2501)) ([`4227fcc`](https://github.com/docling-project/docling/commit/4227fcc3e1e123da1ffc1a8609aa93d9a756a67e))
+* **xlsx:** Speed up by detecting the true last non-empty row/column ([#2404](https://github.com/docling-project/docling/issues/2404)) ([`b66624b`](https://github.com/docling-project/docling/commit/b66624bfff1b0db634925fe468a7fe1c2c78c077))
+
+### Documentation
+
+* Fix typo in mcp.md ([#2502](https://github.com/docling-project/docling/issues/2502)) ([`86556d8`](https://github.com/docling-project/docling/commit/86556d8367b1ed70ba59b8c6e96a09f91ad4798e))
+* Discord badge with join link ([#2473](https://github.com/docling-project/docling/issues/2473)) ([`dd03b53`](https://github.com/docling-project/docling/commit/dd03b531178a4038291fbf5785a8f3624965de86))
+
+### Performance
+
+* Use docling-parse-v4 as default ([#2503](https://github.com/docling-project/docling/issues/2503)) ([`89820d0`](https://github.com/docling-project/docling/commit/89820d01b5272d4600bdd4ea7168f0d031fd52dc))
+
+## [v2.57.0](https://github.com/docling-project/docling/releases/tag/v2.57.0) - 2025-10-15
+
+### Feature
+
+* **docx:** Process drawingml objects in docx ([#2453](https://github.com/docling-project/docling/issues/2453)) ([`1682993`](https://github.com/docling-project/docling/commit/16829939cf1f8d89974c51c1d7c5cdc2fe8045da))
+
+### Fix
+
+* Use proper page concatentation in VLM pipeline MD/HTML conversion ([#2458](https://github.com/docling-project/docling/issues/2458)) ([`cd7f7ba`](https://github.com/docling-project/docling/commit/cd7f7ba145c401fb6567ef1c7337c840100cded1))
+
+### Documentation
+
+* Example on PII obfuscation ([#2459](https://github.com/docling-project/docling/issues/2459)) ([`3e6da2c`](https://github.com/docling-project/docling/commit/3e6da2c62dee9a48b442245dbc1aa5e144c1446c))
+
+## [v2.56.1](https://github.com/docling-project/docling/releases/tag/v2.56.1) - 2025-10-13
+
+### Fix
+
+* Avoid downloading easyocr models by default ([#2454](https://github.com/docling-project/docling/issues/2454)) ([`688a7df`](https://github.com/docling-project/docling/commit/688a7dfd38ba3e3aea64f7fe027815e910818785))
+
+## [v2.56.0](https://github.com/docling-project/docling/releases/tag/v2.56.0) - 2025-10-13
+
+### Feature
+
+* AutoOCR model selecting the best OCR model available and deprecating the usage of EasyOCR ([#2391](https://github.com/docling-project/docling/issues/2391)) ([`f7244a4`](https://github.com/docling-project/docling/commit/f7244a433378327576e3554d41d80928ee38e2a7))
+* Add Tesseract PSM options support ([#2411](https://github.com/docling-project/docling/issues/2411)) ([`f11f8c0`](https://github.com/docling-project/docling/commit/f11f8c0a8188f99179acd7e47a48b908b1ea64d0))
+
+### Fix
+
+* **asr:** Implement robust status check in AsrPipeline ([#2442](https://github.com/docling-project/docling/issues/2442)) ([`db985bb`](https://github.com/docling-project/docling/commit/db985bb159173b56977db1228222592dcdbcb297))
+* Deal with chartsheets in workbooks ([#2433](https://github.com/docling-project/docling/issues/2433)) ([`cce18b2`](https://github.com/docling-project/docling/commit/cce18b2ff7f14ab0643364055a1ec8a77479a211))
+* Skip temporary docx files ([#2413](https://github.com/docling-project/docling/issues/2413)) ([`ee55013`](https://github.com/docling-project/docling/commit/ee5501320e003f45b7f4b9fdaaae69d481ec9ccc))
+* AsrPipeline to handle absolute paths and BytesIO streams correctly ([#2407](https://github.com/docling-project/docling/issues/2407)) ([`b5f7fef`](https://github.com/docling-project/docling/commit/b5f7fef29b4bbb51393a212041011ec5950aba28))
+* Enrichment of documents without pages metadata (pptx and xlsx) ([#2401](https://github.com/docling-project/docling/issues/2401)) ([`0610d01`](https://github.com/docling-project/docling/commit/0610d01afae6e3a1c88c85894be52503d7c873e4))
+* Proper heading support in rich tables for HTML backend ([#2394](https://github.com/docling-project/docling/issues/2394)) ([`9705f40`](https://github.com/docling-project/docling/commit/9705f4020c8e7f43cc5b0658c9641df24508502f))
+
+### Documentation
+
+* Remove deprecated call in custom_convert.py ([#2447](https://github.com/docling-project/docling/issues/2447)) ([`9020044`](https://github.com/docling-project/docling/commit/90200443bcd92ef52e1b1f5cc32a5ee9d85f74f2))
+* Fixed a few typos ([#2441](https://github.com/docling-project/docling/issues/2441)) ([`2a0f563`](https://github.com/docling-project/docling/commit/2a0f56390a1426d15d8330d3f3f36aeec464693c))
+* Add MongoDB + VoyageAI ([#2382](https://github.com/docling-project/docling/issues/2382)) ([`f2854b2`](https://github.com/docling-project/docling/commit/f2854b2e1d790c42b93f2925d42adb53d33fd01e))
+* Add RAG example with MongoDB Atlas Vector Search and VoyageAI embeddings ([#2341](https://github.com/docling-project/docling/issues/2341)) ([`8a4b946`](https://github.com/docling-project/docling/commit/8a4b946a1acf89b831a65c99503290b3ea957ec7))
+
 ## [v2.55.1](https://github.com/docling-project/docling/releases/tag/v2.55.1) - 2025-10-03
 
 ### Fix
